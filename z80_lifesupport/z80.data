@@ -1,0 +1,14 @@
+MODELDATA
+MODELDATA_VERSION "v1998.8"
+DESIGN "z80";
+
+/* port drive, load, max capacitance and max transition in data file */
+PORTDATA
+z80_WAIT: MAXTRANS(0.0);
+ENDPORTDATA
+
+/* timing arc data */
+TIMINGDATA
+
+ENDTIMINGDATA
+ENDMODELDATA

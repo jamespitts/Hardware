@@ -1,0 +1,25 @@
+
+NET "z80_m1" LOC = "P29";
+NET "z80_rd" LOC = "P30";
+NET "z80_mreq" LOC = "P31";
+NET "z80_wait" LOC = "P32";
+
+net "z80_addr<0>" loc="p37";
+net "z80_addr<1>" loc="p36";
+net "z80_addr<2>" loc="p35";
+net "z80_addr<3>" loc="p34";
+
+NET "w25q_cs" loc = "p7";
+net "w25q_di" loc = "p2";
+net "w25q_do" loc = "p6";
+NET "w25q_clk" loc = "p3";
+
+NET "reset" LOC = "P33";
+NET "reset" BUFG="SR";
+
+NET "clk" LOC = "P43";
+NET "clk" BUFG = CLK;
+
+#NET "button" LOC =  "P18";
+#NET "led_1" LOC =  "P39";
+#NET "led_2" LOC =  "P38";

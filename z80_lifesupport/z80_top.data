@@ -1,0 +1,85 @@
+MODELDATA
+MODELDATA_VERSION "v1998.8"
+DESIGN "z80_top";
+
+/* port drive, load, max capacitance and max transition in data file */
+PORTDATA
+clk: MAXTRANS(0.0);
+z80_rd: MAXTRANS(0.0);
+z80_mreq: MAXTRANS(0.0);
+z80_m1: MAXTRANS(0.0);
+reset: MAXTRANS(0.0);
+z80_wait: MAXTRANS(0.0);
+w25q_cs: MAXTRANS(0.0);
+w25q_do: MAXTRANS(0.0);
+w25q_di: MAXTRANS(0.0);
+w25q_clk: MAXTRANS(0.0);
+ENDPORTDATA
+
+/* timing arc data */
+TIMINGDATA
+
+ARCDATA
+reset_w25q_cs_delay:
+CELL_RISE(scalar) {
+  VALUES("10");
+}
+CELL_FALL(scalar) {
+  VALUES("10");
+}
+ENDARCDATA
+
+ARCDATA
+clk_z80_wait_delay:
+CELL_RISE(scalar) {
+  VALUES("14.5");
+}
+CELL_FALL(scalar) {
+  VALUES("14.5");
+}
+ENDARCDATA
+
+ARCDATA
+z80_m1_clk_setup:
+CONSTRAINT(scalar) {
+  VALUES("9.5");
+}
+ENDARCDATA
+
+ARCDATA
+z80_mreq_clk_setup:
+CONSTRAINT(scalar) {
+  VALUES("9.5");
+}
+ENDARCDATA
+
+ARCDATA
+z80_rd_clk_setup:
+CONSTRAINT(scalar) {
+  VALUES("9.5");
+}
+ENDARCDATA
+
+ARCDATA
+z80_m1_clk_hold:
+CONSTRAINT(scalar) {
+  VALUES("-3");
+}
+ENDARCDATA
+
+ARCDATA
+z80_mreq_clk_hold:
+CONSTRAINT(scalar) {
+  VALUES("-3");
+}
+ENDARCDATA
+
+ARCDATA
+z80_rd_clk_hold:
+CONSTRAINT(scalar) {
+  VALUES("-3");
+}
+ENDARCDATA
+
+ENDTIMINGDATA
+ENDMODELDATA

@@ -1,0 +1,12 @@
+Storage Target: SPI Flash Single FPGA
+128K
+FF
+Untitled
+/home/jim/Source/Hardware/z80_lifesupport/
+
+MCS
+Yes
+lifesupport/
+
+BIN (Swap Bits ON)
+1

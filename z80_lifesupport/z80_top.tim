@@ -1,0 +1,147 @@
+                           Performance Summary Report
+                           --------------------------
+
+Design:     z80_top
+Device:     XC9572XL-10-VQ44
+Speed File: Version 3.0
+Program:    Timing Report Generator:  version P.20131013
+Date:       Wed May  6 13:05:33 2020
+
+Performance Summary:
+
+Pad to Pad (tPD)                          :         10.0ns (1 macrocell levels)
+Pad 'reset' to Pad 'w25q_cs'                                      
+
+Clock net 'clk' path delays:
+
+Clock Pad to Output Pad (tCO)             :         14.5ns (2 macrocell levels)
+Clock Pad 'clk' to Output Pad 'z80_wait'                                  (GCK)
+
+Clock to Setup (tCYC)                     :         10.0ns (1 macrocell levels)
+Clock to Q, net 'z80_entity/state_FSM_FFd2.Q' to DFF Setup(D) at 'z80_entity/state_FSM_FFd2.D'        (GCK)
+Target FF drives output net 'z80_entity/state_FSM_FFd2'
+
+Setup to Clock at the Pad (tSU)           :          6.5ns (0 macrocell levels)
+Data signal 'z80_rd' to DFF D input Pin at 'z80_entity/state_FSM_FFd2.D'
+Clock pad 'clk'                                                           (GCK)
+
+                          Minimum Clock Period: 10.0ns
+                     Maximum Internal Clock Speed: 100.0Mhz
+                            (Limited by Cycle Time)
+
+--------------------------------------------------------------------------------
+                            Pad to Pad (tPD) (nsec)
+
+\ From      r
+ \          e
+  \         s
+   \        e
+    \       t
+     \       
+      \      
+  To   \------
+
+w25q_cs  10.0
+
+--------------------------------------------------------------------------------
+                      Clock Pad to Output Pad (tCO) (nsec)
+
+\ From       c
+ \           l
+  \          k
+   \          
+    \         
+     \        
+      \       
+       \      
+  To    \------
+
+z80_wait  14.5
+
+--------------------------------------------------------------------------------
+                   Setup to Clock at Pad (tSU or tSUF) (nsec)
+
+\ From       c
+ \           l
+  \          k
+   \          
+    \         
+     \        
+      \       
+       \      
+  To    \------
+
+z80_m1     6.5
+z80_mreq   6.5
+z80_rd     6.5
+
+--------------------------------------------------------------------------------
+                          Clock to Setup (tCYC) (nsec)
+                                  (Clock: clk)
+
+\ From                          z     z
+ \                              8     8
+  \                             0     0
+   \                            _     _
+    \                           e     e
+     \                          n     n
+      \                         t     t
+       \                        i     i
+        \                       t     t
+         \                      y     y
+          \                     /     /
+           \                    s     s
+            \                   t     t
+             \                  a     a
+              \                 t     t
+               \                e     e
+                \               _     _
+                 \              F     F
+                  \             S     S
+                   \            M     M
+                    \           _     _
+                     \          F     F
+                      \         F     F
+                       \        d     d
+                        \       1     2
+                         \      .     .
+                          \     Q     Q
+  To                       \------------
+
+z80_entity/state_FSM_FFd1.D        10.0
+z80_entity/state_FSM_FFd2.D  10.0  10.0
+
+Path Type Definition: 
+
+Pad to Pad (tPD) -                        Reports pad to pad paths that start 
+                                          at input pads and end at output pads. 
+                                          Paths are not traced through 
+                                          registers. 
+
+Clock Pad to Output Pad (tCO) -           Reports paths that start at input 
+                                          pads trace through clock inputs of 
+                                          registers and end at output pads. 
+                                          Paths are not traced through PRE/CLR 
+                                          inputs of registers. 
+
+Setup to Clock at Pad (tSU or tSUF) -     Reports external setup time of data 
+                                          to clock at pad. Data path starts at 
+                                          an input pad and ends at register 
+                                          (Fast Input Register for tSUF) D/T 
+                                          input. Clock path starts at input pad 
+                                          and ends at the register clock input. 
+                                          Paths are not traced through 
+                                          registers. Pin-to-pin setup 
+                                          requirement is not reported or 
+                                          guaranteed for product-term clocks 
+                                          derived from macrocell feedback 
+                                          signals. 
+
+Clock to Setup (tCYC) -                   Register to register cycle time. 
+                                          Include source register tCO and 
+                                          destination register tSU. Note that 
+                                          when the computed Maximum Clock Speed 
+                                          is limited by tCYC it is computed 
+                                          assuming that all registers are 
+                                          rising-edge sensitive. 
+
