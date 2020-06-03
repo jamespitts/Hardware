@@ -4,22 +4,29 @@ NET "z80_rd" LOC = "P30";
 NET "z80_mreq" LOC = "P31";
 NET "z80_wait" LOC = "P32";
 
-net "z80_addr<0>" loc="p37";
-net "z80_addr<1>" loc="p36";
-net "z80_addr<2>" loc="p35";
-net "z80_addr<3>" loc="p34";
+NET "z80_addr<0>" LOC="p37";
+NET "z80_addr<1>" LOC="p36";
+NET "z80_addr<2>" LOC="p35";
+NET "z80_addr<3>" LOC="p40";
 
-NET "w25q_cs" loc = "p7";
-net "w25q_di" loc = "p2";
-net "w25q_do" loc = "p6";
-NET "w25q_clk" loc = "p3";
+NET "z80_data<0>" LOC="p18";
+NET "z80_data<1>" LOC="p19";
+NET "z80_data<2>" LOC="p20";
+NET "z80_data<3>" LOC="p21";
+NET "z80_data<4>" LOC="p22";
+NET "z80_data<5>" LOC="p23";
+NET "z80_data<6>" LOC="p27";
+NET "z80_data<7>" LOC="p28";
 
-NET "reset" LOC = "P33";
-NET "reset" BUFG="SR";
+NET "w25_cs" LOC = "p7";
+NET "w25_mosi" LOC = "p2";
+NET "w25_miso" LOC = "p6";
+NET "w25_clk" LOC = "p3";
 
-NET "clk" LOC = "P43";
-NET "clk" BUFG = CLK;
+NET "reset" LOC="P33"|BUFG=SR;
+
+NET "clk" LOC="P43"|BUFG=CLK;
 
 #NET "button" LOC =  "P18";
-#NET "led_1" LOC =  "P39";
-#NET "led_2" LOC =  "P38";
+NET "led_1" LOC =  "P39";
+NET "led_2" LOC =  "P38";

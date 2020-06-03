@@ -2,9 +2,9 @@
 -- Company: 
 -- Engineer: 
 -- 
--- Create Date:    21:21:25 05/05/2020 
+-- Create Date:    16:38:25 05/07/2020 
 -- Design Name: 
--- Module Name:    W25Q - Behavioral 
+-- Module Name:    spi_master - Behavioral 
 -- Project Name: 
 -- Target Devices: 
 -- Tool versions: 
@@ -29,26 +29,25 @@ use IEEE.STD_LOGIC_1164.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity W25Q is
-    port (reset: in std_logic;
-          clk: in std_logic;
-          z80_addr: in std_logic_vector (3 downto 0);
-          w25q_cs: out std_logic;
-          w25q_clk: out std_logic;
-          w25q_di: out std_logic;
-          w25q_do: out std_logic);
-end W25Q;
+entity spi_master is 
+    port (clk : in std_logic;
+          reset : in std_logic;
+          
+          addr: in std_logic_vector (1 downto 0);
+          data : inout std_logic_vector(7 downto 0);
 
-architecture Behavioral of W25Q is
+          spi_cs: out std_logic;
+          spi_mosi: out std_logic;
+          spi_miso: in std_logic;
+          spi_clk: out std_logic
+    );
+end spi_master;
+
+architecture Behavioral of spi_master is
 
 begin
-w25q_cs <=reset;
-process(clk, reset) is
-begin
-    if reset='1'
-    then
-    end if;
-end process;
-
+    spi_cs <='0';
+    spi_mosi <= '0';
+    spi_clk <= '0';
 end Behavioral;
 
