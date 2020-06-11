@@ -74,7 +74,11 @@ architecture Behavioral of z80_top is
 		clk : IN std_logic;
 		reset : IN std_logic;
         addr : IN std_logic_vector(1 downto 0);
-		data : IN std_logic_vector(7 downto 0);
+		data_in : in std_logic_vector(7 downto 0);
+        data_out : out std_logic_vector(7 downto 0);
+        cs : in std_logic;
+        done: out std_logic;
+        
 		spi_cs : OUT std_logic;
 		spi_mosi : OUT std_logic;
         spi_miso : IN std_logic;          
@@ -95,6 +99,9 @@ architecture Behavioral of z80_top is
     signal spi_data: std_logic_vector(7 downto 0);
     signal spi_addr: std_logic_vector(1 downto 0);
     signal dummy_addr: std_logic_vector (11 downto 0)  := (others => '0'); -- pad out the remaining address lines
+    signal data_out: std_logic_vector(7 downto 0);
+    signal done: std_logic;
+    signal cs: std_logic;
 begin
 
     led_1 <= '0';
@@ -108,8 +115,6 @@ begin
 		m1 => z80_m1,
 		mreq => z80_mreq,
         hold => z80_wait,
-        --addr => z80_addr,
-        --addr => dummy_addr,
         addr(3 downto 0) => z80_addr, 
         addr(15 downto 4) => dummy_addr, 
         data=>z80_data,
@@ -123,7 +128,12 @@ begin
         
 		reset => reset,
         addr => spi_addr,
-		data => spi_data,
+		data_in => spi_data,
+        
+        data_out=>data_out,
+        cs=>cs,
+        done=>done,
+
         spi_cs => w25_cs,
         spi_miso => w25_miso,
 		spi_mosi => w25_mosi,

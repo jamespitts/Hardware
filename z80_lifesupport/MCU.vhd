@@ -42,7 +42,8 @@ entity MCU is
           data: inout std_logic_vector(7 downto 0);
           
           spi_addr: out std_logic_vector(1 downto 0);
-          spi_data: inout std_logic_vector(7 downto 0)
+          spi_data: inout std_logic_vector(7 downto 0);
+          spi_busy: in std_logic
           );
 end MCU;
 
@@ -51,6 +52,7 @@ architecture Behavioral of MCU is
     type state_type is (ready, addr_0, addr_1, addr_2, done);
     signal state: state_type := ready;
     --signal read_addr: std_logic_vector(15 downto 0);
+    signal spi_done: std_logic;
 begin
 
     process(clk, reset) is
@@ -60,27 +62,28 @@ begin
         hold <= 'Z';
         elsif rising_edge(clk)
         then 
-            if state = ready and rd = '0' and mreq = '0'  -- read operation
+            if state = ready and rd = '0' and mreq = '0' and spi_busy='0'  -- read operation
             then
-                hold <= '0';
-                spi_addr <= "00"; 
-                spi_data <= x"03";
+                hold <= '0'; -- halt the z80
+                
+                spi_addr <= "00"; -- write operation
+                spi_data <= x"03"; -- prom read operation
                 state <= addr_0;
+                
             elsif state = addr_0
             then
-                spi_addr <= "01"; 
-                spi_data <= x"00";
+                spi_addr <= "00"; 
+                spi_data <= addr(7 downto 0);
                 state <= addr_1;
             elsif state = addr_1
             then
-                spi_addr <= "10"; 
-                spi_data <= x"00";
+                spi_addr <= "00"; 
+                spi_data <= addr(15 downto 8);
                 state <= addr_2;    
             elsif state = addr_2
             then
-                spi_addr <= "11"; 
-                spi_data(3 downto 0) <= addr( 3 downto 0);
-                spi_data(7 downto 3) <= (others=>'0');
+                spi_addr <= "00"; 
+                spi_data <= (others => '0');
                 state <= done;
             elsif state = done
             then
