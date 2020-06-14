@@ -46,9 +46,10 @@ ARCHITECTURE behavior OF test_spi_master IS
          
          data_in : IN  std_logic_vector(7 downto 0);
          data_out : OUT  std_logic_vector(7 downto 0);
-         start : in std_logic;
-         load: in std_logic;
-         done: out std_logic;
+         start : IN std_logic;
+         load : IN std_logic;
+         last : IN std_logic;
+         done : OUT std_logic;
          
          spi_cs : OUT  std_logic;
          spi_mosi : OUT  std_logic;
@@ -64,6 +65,7 @@ ARCHITECTURE behavior OF test_spi_master IS
    signal data_in : std_logic_vector(7 downto 0) := (others => '0');
    signal start : std_logic := '0';
    signal load : std_logic := '0';
+   signal last : std_logic := '0';
    signal spi_miso : std_logic := '0';
 
 
@@ -89,6 +91,7 @@ BEGIN
           data_out => data_out,
           start => start,
           load => load,
+          last => last,
           done => done,
           
           spi_cs => spi_cs,
@@ -111,20 +114,39 @@ BEGIN
       reset <= '1';     
       start <= '0';
       load <= '0';
+      last <= '0';
          
       wait until rising_edge(clk);
       
       data_in <= x"9F";
       load <= '1';
+      last <= '0';
       
       wait until rising_edge(clk);
       start <= '1';
+      load <= '0';
       
       wait until done = '1';
       start <= '0';
       wait until rising_edge(clk);
       
-      report "all done";
+      data_in <= (others=>'0');
+      load <= '1';
+      last <= '0';
+      wait until rising_edge(clk);
+      start <= '1';
+      load <= '0';
+      wait until done = '1';
+
+      data_in <= (others=>'0');
+      load <= '1';
+      last <= '1';
+      wait until rising_edge(clk);
+      start <= '1';
+      load <= '0';
+      wait until done = '1';
+      
+      report "All done.";
 
       wait;
    end process;

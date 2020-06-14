@@ -40,6 +40,7 @@ entity spi_master is
 
           start : in std_logic;
           load: in std_logic;
+          last: in std_logic;
           done: out std_logic;
 
           spi_cs: out std_logic;
@@ -50,9 +51,9 @@ entity spi_master is
 end spi_master;
 
 architecture Behavioral of spi_master is
-    type state_type is (ready, busy);
-    signal state: state_type := ready;
-    signal send_len : std_logic_vector(2 downto 0);
+    type state_type is (ready_state, busy_state, done_state);
+    signal state: state_type := ready_state;
+    signal send_len : std_logic_vector(3 downto 0);
     signal data : std_logic_vector(7 downto 0);
 begin
     process (clk, reset) is
@@ -62,38 +63,42 @@ begin
             data_out <= (others=>'0');
             spi_cs <='1';
             spi_mosi <= '0';
-            spi_clk <= '0';
-            done <= '0';
             data <= (others => '0');
-            send_len <= "000";
+            send_len <= x"0";
         elsif falling_edge(clk) then
-            if (start='1' and state=ready) or state = busy
+            if (start='1' and state=ready_state) or state = busy_state
             then
-                state <= busy;
+                state <= busy_state;
                 spi_cs <= '0';
                 spi_mosi <= data(7);
                 data <= data(6 downto 0) & spi_miso;
-                send_len <= send_len - "001";
-                if send_len = "000"
+                send_len <= send_len - x"1";
+                if send_len = x"0"
                 then
-                    state <= ready;
-                    done <= '1';
+                    state <= done_state;
+                    spi_cs <= last;
+                    data_out <= data;
                 end if;
-            elsif load = '1' and not (state = busy)
+            elsif load = '1' and not (state = busy_state)
             then
-                spi_cs <= '1';
-                done <= '0';
-                send_len <= "111";
+                send_len <= x"8";
                 data <= data_in;
+                state <= ready_state;
             end if; 
         end if; 
     end process;
     
-    process(clk) is
+   
+    done <= '1' when state=done_state else '0';
+    
+    process(clk, reset,state) is
     begin
-        if rising_edge(clk) and state = ready
+        if reset='0'
         then
-      --   spi_clk <= not clk;
+            spi_clk <='0';
+        elsif state = busy_state
+        then
+            spi_clk <= clk;
         end if;
     end process;
     
