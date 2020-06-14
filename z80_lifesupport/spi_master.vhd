@@ -19,6 +19,8 @@
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+  use ieee.std_logic_unsigned.all;
+
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
@@ -33,10 +35,11 @@ entity spi_master is
     port (clk : in std_logic;
           reset : in std_logic;
           
-          addr: in std_logic_vector (1 downto 0);
           data_in : in std_logic_vector(7 downto 0);
           data_out : out std_logic_vector(7 downto 0);
-          cs : in std_logic;
+
+          start : in std_logic;
+          load: in std_logic;
           done: out std_logic;
 
           spi_cs: out std_logic;
@@ -47,7 +50,10 @@ entity spi_master is
 end spi_master;
 
 architecture Behavioral of spi_master is
-
+    type state_type is (ready, busy);
+    signal state: state_type := ready;
+    signal send_len : std_logic_vector(2 downto 0);
+    signal data : std_logic_vector(7 downto 0);
 begin
     process (clk, reset) is
     begin
@@ -58,14 +64,38 @@ begin
             spi_mosi <= '0';
             spi_clk <= '0';
             done <= '0';
-         
+            data <= (others => '0');
+            send_len <= "000";
         elsif falling_edge(clk) then
-            if cs = '1'
+            if (start='1' and state=ready) or state = busy
             then
-                done <= '1';
-            end if;
-        
+                state <= busy;
+                spi_cs <= '0';
+                spi_mosi <= data(7);
+                data <= data(6 downto 0) & spi_miso;
+                send_len <= send_len - "001";
+                if send_len = "000"
+                then
+                    state <= ready;
+                    done <= '1';
+                end if;
+            elsif load = '1' and not (state = busy)
+            then
+                spi_cs <= '1';
+                done <= '0';
+                send_len <= "111";
+                data <= data_in;
+            end if; 
+        end if; 
+    end process;
+    
+    process(clk) is
+    begin
+        if rising_edge(clk) and state = ready
+        then
+      --   spi_clk <= not clk;
         end if;
     end process;
+    
 end Behavioral;
 

@@ -44,10 +44,10 @@ ARCHITECTURE behavior OF test_spi_master IS
          clk : IN  std_logic;
          reset : IN  std_logic;
          
-         addr : IN  std_logic_vector(1 downto 0);
          data_in : IN  std_logic_vector(7 downto 0);
          data_out : OUT  std_logic_vector(7 downto 0);
-         cs : in std_logic;
+         start : in std_logic;
+         load: in std_logic;
          done: out std_logic;
          
          spi_cs : OUT  std_logic;
@@ -61,9 +61,9 @@ ARCHITECTURE behavior OF test_spi_master IS
    --Inputs
    signal clk : std_logic := '0';
    signal reset : std_logic := '0';
-   signal addr : std_logic_vector(1 downto 0) := (others => '0');
-   signal data_in : std_logic_vector(7 downto 0);
-   signal cs : std_logic := '0';
+   signal data_in : std_logic_vector(7 downto 0) := (others => '0');
+   signal start : std_logic := '0';
+   signal load : std_logic := '0';
    signal spi_miso : std_logic := '0';
 
 
@@ -85,10 +85,10 @@ BEGIN
           clk => clk,
           reset => reset,
           
-          addr => addr,
           data_in => data_in,
           data_out => data_out,
-          cs => cs,
+          start => start,
+          load => load,
           done => done,
           
           spi_cs => spi_cs,
@@ -108,19 +108,22 @@ BEGIN
    begin		
       reset <='0';
       wait for clk_period*3;
-      reset<='1';      
-      cs <= '0';
+      reset <= '1';     
+      start <= '0';
+      load <= '0';
          
       wait until rising_edge(clk);
       
-      addr <= "00";
       data_in <= x"9F";
-      cs <= '1';
+      load <= '1';
+      
+      wait until rising_edge(clk);
+      start <= '1';
       
       wait until done = '1';
-      cs <= '0';
+      start <= '0';
+      wait until rising_edge(clk);
       
-      data_in <= x"00";
       report "all done";
 
       wait;

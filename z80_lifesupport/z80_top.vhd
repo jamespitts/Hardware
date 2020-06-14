@@ -51,32 +51,34 @@ end z80_top;
 
 architecture Behavioral of z80_top is
 
-    COMPONENT MCU
-	PORT(
-            reset : IN std_logic;
-		clk : IN std_logic;
-        
-        -- from z80
-		rd : IN std_logic;
-		m1 : IN std_logic;
-		mreq : IN std_logic;
-        hold: out std_logic;
-		addr : IN std_logic_vector(15 downto 0);       
-		data : INOUT std_logic_vector(7 downto 0);
-        
-        spi_addr: out std_logic_vector(1 downto 0);
-        spi_data: inout std_logic_vector(7 downto 0)
-		);
-	END COMPONENT;
+--  COMPONENT MCU
+--	PORT(
+--        reset : IN std_logic;
+--		clk : IN std_logic;
+--        
+--        -- from z80
+--		rd : IN std_logic;
+--		m1 : IN std_logic;
+--		mreq : IN std_logic;
+--        hold: out std_logic;
+--		addr : IN std_logic_vector(15 downto 0);       
+--		data : OUT std_logic_vector(7 downto 0);
+--        
+--        spi_addr: out std_logic_vector(1 downto 0);
+--        spi_data: in std_logic_vector(7 downto 0)
+--		);
+--	END COMPONENT;
     
     COMPONENT spi_master
 	PORT(
 		clk : IN std_logic;
 		reset : IN std_logic;
-        addr : IN std_logic_vector(1 downto 0);
+
 		data_in : in std_logic_vector(7 downto 0);
         data_out : out std_logic_vector(7 downto 0);
-        cs : in std_logic;
+        
+        start : in std_logic;
+        load: in std_logic;
         done: out std_logic;
         
 		spi_cs : OUT std_logic;
@@ -86,68 +88,51 @@ architecture Behavioral of z80_top is
 		);
 	END COMPONENT;
     
---    component z80 
---    port (clk: in std_logic;
---          reset: in std_logic;
---          z80_m1 : in std_logic;
---          z80_mreq : in std_logic;
---          z80_rd : in std_logic;
---          z80_wait : out std_logic
---          );
---    end component;
-    
-    signal spi_data: std_logic_vector(7 downto 0);
-    signal spi_addr: std_logic_vector(1 downto 0);
+    --signal spi_data: std_logic_vector(7 downto 0);
+    --signal spi_addr: std_logic_vector(1 downto 0);
     signal dummy_addr: std_logic_vector (11 downto 0)  := (others => '0'); -- pad out the remaining address lines
-    signal data_out: std_logic_vector(7 downto 0);
+    signal data_in: std_logic_vector(7 downto 0);
+    signal data_out: std_logic_vector(7 downto 0) := (others => '0');
     signal done: std_logic;
-    signal cs: std_logic;
+    signal load: std_logic;
+    signal start: std_logic;
 begin
 
     led_1 <= '0';
     led_2 <= '0';
     
-    inst_mcu: MCU port map(
-        reset=>reset, 
-        clk=>clk,
-
-        rd => z80_rd,
-		m1 => z80_m1,
-		mreq => z80_mreq,
-        hold => z80_wait,
-        addr(3 downto 0) => z80_addr, 
-        addr(15 downto 4) => dummy_addr, 
-        data=>z80_data,
-        
-        spi_addr=>spi_addr,
-        spi_data=>spi_data
-    );
+--    inst_mcu: MCU port map(
+--        reset=>reset, 
+--        clk=>clk,
+--
+--        rd => z80_rd,
+--		m1 => z80_m1,
+--		mreq => z80_mreq,
+--        hold => z80_wait,
+--        addr(3 downto 0) => z80_addr, 
+--        addr(15 downto 4) => dummy_addr, 
+--        data=>z80_data,
+--        
+--       -- spi_addr=>spi_addr,
+--        spi_data=>data_out
+--    );
     
     inst_spi_master: spi_master PORT MAP(
 		clk => clk,
-        
 		reset => reset,
-        addr => spi_addr,
-		data_in => spi_data,
+     
+		data_in => data_in,
+        data_out => data_out,
         
-        data_out=>data_out,
-        cs=>cs,
+        start=>start,
         done=>done,
+        load=>load,
 
         spi_cs => w25_cs,
         spi_miso => w25_miso,
 		spi_mosi => w25_mosi,
 		spi_clk => w25_clk
 	);
-    
---    inst_z80: entity z80 port map (
---        clk=>clk,  
---        reset=>reset, 
---        z80_m1=>z80_m1, 
---        z80_mreq=>z80_mreq, 
---        z80_rd=>z80_rd, 
---        z80_wait=>z80_wait
---    );
     
 end Behavioral;
 

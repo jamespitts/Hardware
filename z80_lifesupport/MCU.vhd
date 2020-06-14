@@ -42,7 +42,7 @@ entity MCU is
           data: inout std_logic_vector(7 downto 0);
           
           spi_addr: out std_logic_vector(1 downto 0);
-          spi_data: inout std_logic_vector(7 downto 0);
+          spi_data: out std_logic_vector(7 downto 0);
           spi_busy: in std_logic
           );
 end MCU;

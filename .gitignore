@@ -1,4 +1,5 @@
 # intermediate build files
+*.jed # ise bit file
 *.bgn
 *.bit
 *.bld
