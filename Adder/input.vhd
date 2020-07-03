@@ -1,41 +1,39 @@
-----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
--- Create Date:    16:02:38 06/27/2020 
--- Design Name: 
--- Module Name:    input - Behavioral 
--- Project Name: 
--- Target Devices: 
--- Tool versions: 
--- Description: 
---
--- Dependencies: 
---
--- Revision: 
--- Revision 0.01 - File Created
--- Additional Comments: 
---
-----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
-
--- Uncomment the following library declaration if instantiating
--- any Xilinx primitives in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
-
 entity input is
+    port(button_lo: in std_logic;
+         button_hi: in std_logic;
+         value: out std_logic_vector(3 downto 0)
+    );
 end input;
 
 architecture Behavioral of input is
-
+    signal working_value: std_logic_vector(3 downto 0) := x"0";
+    signal button_1: std_logic := '0';
+    signal button_2: std_logic := '0';
 begin
+    process(button_lo, button_hi, button_1, button_2)
+    begin
+            if (button_lo xor button_1) = '1'
+            then
+               if button_lo = '1'
+               then
+                  working_value <= working_value(2 downto 0) & '0';  
+               end if;
+               button_1 <= button_lo;
+            elsif (button_hi xor button_2) = '1'
+            then 
+               if button_hi = '1'
+               then
+                  working_value <= working_value(2 downto 0) & '1';    
+               end if;
+               button_2 <= button_hi;
+            end if;
 
-
+    end process;
+    
+    value <= working_value;
+    
 end Behavioral;
 

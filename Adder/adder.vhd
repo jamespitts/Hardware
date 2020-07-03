@@ -7,15 +7,15 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity adder is
 PORT(
-        lhs: in std_logic_vector (1 downto 0) := "00";
-        rhs: in std_logic_vector (1 downto 0) := "00";
-        result: out std_logic_vector (2 downto 0)
+        lhs: in std_logic_vector (3 downto 0) := x"0";
+        rhs: in std_logic_vector (3 downto 0) := x"0";
+        result: out std_logic_vector (4 downto 0)
 );
 end adder;
 
 architecture Behavioral of adder is
     signal carry: std_logic;
-    signal sum: std_logic_vector(2 downto 0) := "000";
+    signal sum: std_logic_vector(4 downto 0) := "00000";
 begin
     half_adder: process (lhs, rhs)
     begin
