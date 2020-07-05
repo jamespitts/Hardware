@@ -2,7 +2,8 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
 entity input is
-    port(button_lo: in std_logic;
+    port(clk: in std_logic; 
+         button_lo: in std_logic;
          button_hi: in std_logic;
          value: out std_logic_vector(3 downto 0)
     );
@@ -15,6 +16,8 @@ architecture Behavioral of input is
 begin
     process(button_lo, button_hi, button_1, button_2)
     begin
+      if rising_edge(clk)
+      then
             if (button_lo xor button_1) = '1'
             then
                if button_lo = '1'
@@ -30,7 +33,7 @@ begin
                end if;
                button_2 <= button_hi;
             end if;
-
+       end if;
     end process;
     
     value <= working_value;

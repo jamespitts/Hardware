@@ -10,17 +10,17 @@ entity debounce is
 end debounce;
 
 architecture Behavioral of debounce is
-    signal debouncer: std_logic_vector(7 downto 0) := x"00";
+    signal debouncer: std_logic_vector(3 downto 0) := x"0";
 begin
 
     process(clk, debouncer, signal_in)
     begin
         if rising_edge(clk)
         then
-            debouncer <= debouncer(6 downto 0) & signal_in;
+            debouncer <= debouncer(2 downto 0) & signal_in;
         end if;
     end process;
-    signal_out <= '1' when debouncer=x"ff" else '0';
+    signal_out <= '1' when debouncer=x"f" else '0';
 
 end Behavioral;
 

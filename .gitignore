@@ -1,6 +1,10 @@
 # intermediate build files
 *.jed # ise bit file
+*.exe
+*.wdb
 *.bgn
+isim.cmd
+isim.log
 *.bit
 *.bld
 *.cmd_log
@@ -66,3 +70,32 @@ xlnx_auto_0_xdb/
 xst/
 _ngo/
 _xmsgs/
+isim/
+
+fuse.xmsgs
+fuse.log
+
+
+_impact.cmd
+_impact.log
+*.vhi
+fuseRelaunch.cmd
+tmperr.err
+*.chk
+*.cxt
+*.data
+*.gyd
+*.jed
+*.lfp
+top.log
+*.mfd
+*.mod
+*.nga
+*.pnx
+*.rpt
+*.spl
+*.sym
+*.tim
+*.vm6
+*_build.xml
+xilinxsim.ini
