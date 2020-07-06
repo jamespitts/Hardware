@@ -3,6 +3,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity input is
     port(clk: in std_logic; 
+         reset: in std_logic;
          button_lo: in std_logic;
          button_hi: in std_logic;
          value: out std_logic_vector(3 downto 0)
@@ -14,11 +15,14 @@ architecture Behavioral of input is
     signal button_1: std_logic := '0';
     signal button_2: std_logic := '0';
 begin
-    process(button_lo, button_hi, button_1, button_2)
+    process(clk, reset, button_lo, button_hi, button_1, button_2)
     begin
       if rising_edge(clk)
       then
-            if (button_lo xor button_1) = '1'
+         if reset = '0'
+         then
+            working_value <= x"0";
+         elsif (button_lo xor button_1) = '1'
             then
                if button_lo = '1'
                then

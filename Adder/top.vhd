@@ -7,11 +7,13 @@ entity top is
         lhs_led: out std_logic_vector(3 downto 0);
         rhs_led: out std_logic_vector(3 downto 0);
         result_led: out std_logic_vector(4 downto 0);
+        button_0: in std_logic := '1';
         button_1_hi: in std_logic;
         button_1_lo: in std_logic;
         button_2_hi: in std_logic;
         button_2_lo: in std_logic;
-        led_1: out std_logic;
+        led_1: out std_logic := '0';
+        led_2: out std_logic := '0';
         clk: in std_logic
     );
 end top;
@@ -28,6 +30,7 @@ architecture Behavioral of top is
     COMPONENT input
 	 PORT(
       clk: in std_logic;
+      reset: in std_logic;
 		button_hi : IN std_logic;          
       button_lo : IN std_logic;          
 		value: OUT std_logic_vector(3 downto 0)
@@ -61,6 +64,7 @@ architecture Behavioral of top is
     signal button_2_lo_debounced: std_logic;
     
     signal clk_out: std_logic;
+    
 begin
 
 	Inst_adder: adder PORT MAP(
@@ -71,6 +75,7 @@ begin
     
     Inst_input_lhs: input PORT MAP(
       clk => clk,
+      reset => button_0,
 		button_hi => button_1_hi_debounced,
       button_lo => button_1_lo_debounced,
 		value => lhs
@@ -78,6 +83,7 @@ begin
     
     Inst_input_rhs: input PORT MAP(
       clk => clk,
+      reset => button_0,
 		button_hi => button_2_hi_debounced,
       button_lo => button_2_lo_debounced,
 		value => rhs
@@ -115,7 +121,13 @@ begin
     result_led <= result;
     lhs_led <= lhs;
     rhs_led <= rhs;
-    led_1 <= button_1_hi_debounced or button_1_lo_debounced or button_2_hi_debounced or button_2_lo_debounced;
-    
+    led_1 <= button_1_hi_debounced or 
+             button_1_lo_debounced or 
+             button_2_hi_debounced or 
+             button_2_lo_debounced or 
+             not button_0;
+             
+    led_2 <= not button_0;
+       
 end Behavioral;
 
