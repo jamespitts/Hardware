@@ -10,7 +10,7 @@ entity clockdivider is
 end clockdivider;
 
 architecture Behavioral of clockdivider is
-signal counter: unsigned(15 downto 0) := x"0000";
+signal counter: unsigned(7 downto 0) := x"00";
 begin
 process(clk, counter)
 begin
@@ -20,7 +20,7 @@ begin
    end if;
 end process;
 
-clk_out <= '1' when counter(14) = '1' else '0';
+clk_out <= '1' when counter(7) = '1' else '0';
 
 end Behavioral;
 

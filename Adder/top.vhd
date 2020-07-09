@@ -19,7 +19,7 @@ entity top is
 end top;
 
 architecture Behavioral of top is
-    COMPONENT adder
+    COMPONENT adder_reference
     PORT(
 		lhs : IN std_logic_vector(3 downto 0);
 		rhs : IN std_logic_vector(3 downto 0);          
@@ -67,7 +67,7 @@ architecture Behavioral of top is
     
 begin
 
-	Inst_adder: adder PORT MAP(
+	Inst_adder: adder_reference PORT MAP(
 		lhs => lhs,
 		rhs => rhs,
 		result => result

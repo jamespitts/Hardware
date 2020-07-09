@@ -9,7 +9,7 @@ END adder_testbench;
 ARCHITECTURE behavior OF adder_testbench IS 
  
  
-    COMPONENT adder
+    COMPONENT adder_reference
     PORT(
          lhs : IN  std_logic_vector(3 downto 0);
          rhs : IN  std_logic_vector(3 downto 0);
@@ -28,7 +28,7 @@ ARCHITECTURE behavior OF adder_testbench IS
 BEGIN
  
 	-- Instantiate the Unit Under Test (UUT)
-   uut: adder PORT MAP (
+   uut: adder_reference PORT MAP (
           lhs => lhs,
           rhs => rhs,
           result => result
