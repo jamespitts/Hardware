@@ -1,4 +1,7 @@
 # intermediate build files
+
+.DS_Store
+
 *.jed # ise bit file
 *.exe
 *.wdb
