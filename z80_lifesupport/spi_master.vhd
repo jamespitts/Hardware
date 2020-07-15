@@ -1,22 +1,4 @@
-----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
--- Create Date:    16:38:25 05/07/2020 
--- Design Name: 
--- Module Name:    spi_master - Behavioral 
--- Project Name: 
--- Target Devices: 
--- Tool versions: 
--- Description: 
---
--- Dependencies: 
---
--- Revision: 
--- Revision 0.01 - File Created
--- Additional Comments: 
---
-----------------------------------------------------------------------------------
+
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use ieee.std_logic_unsigned.all;
@@ -28,7 +10,7 @@ entity spi_master is
           data_in : in std_logic_vector(7 downto 0);
           data_out : out std_logic_vector(7 downto 0) := x"00";
           
-          cmd: in std_logic;
+          cmd: in std_logic_vector(1 downto 0);
           ready: out std_logic := '0';
 
           spi_cs: out std_logic := '0';
@@ -43,8 +25,8 @@ architecture Behavioral of spi_master is
     signal state: state_type := reset_state;
     signal send_len : std_logic_vector(3 downto 0);
     signal data : std_logic_vector(7 downto 0);
+    signal last: std_logic;
 begin
-
 
     process (clk, reset, cmd) is
     begin
@@ -55,13 +37,14 @@ begin
             data <= (others => '0');
             state <= ready_state;
             send_len <= x"0";
-         elsif cmd = '1' and state = ready_state 
+         elsif cmd(0) = '1' and state = ready_state 
          then
             state <= running_state;
             data <= data_in;
             spi_mosi <= data_in(7);
             send_len <= x"8";
             spi_cs <= '0';
+            last <= cmd(1); -- last byte of sequence raise cs when done
         else
             if rising_edge(clk) or falling_edge(clk) 
             then
@@ -76,8 +59,10 @@ begin
                    if send_len = x"0"
                    then
                        state <= done_state;
+                       spi_cs <= last; 
+                       data_out <= data;
                    end if;                   
-               elsif state = done_state and cmd = '0'
+               elsif state = done_state  and cmd /= "01"
                then
                    state <= ready_state;
                end if;

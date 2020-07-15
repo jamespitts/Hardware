@@ -71,8 +71,8 @@
       <obj_property name="ElementShortName">ready</obj_property>
       <obj_property name="ObjectShortName">ready</obj_property>
    </wvobject>
-   <wvobject fp_name="/test_spi_master/go" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">go</obj_property>
-      <obj_property name="ObjectShortName">go</obj_property>
+   <wvobject fp_name="/test_spi_master/cmd" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">cmd</obj_property>
+      <obj_property name="ObjectShortName">cmd</obj_property>
    </wvobject>
 </wave_config>
